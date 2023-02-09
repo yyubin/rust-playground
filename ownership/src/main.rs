@@ -91,14 +91,89 @@ fn main() {
 
 
 
-    let s1 = String::from("hello");
+    // let s1 = String::from("hello");
 
-    let (s2, len) = calculate_length(s1); // tuple을 반환받아 사용할 수도 있음
+    // let (s2, len) = calculate_length(s1); // tuple을 반환받아 사용할 수도 있음
 
-    println!("The length of '{}' is {}.", s2, len);
+    // println!("The length of '{}' is {}.", s2, len);
 
     // 함수가 값을 사용하지만 소유권은 가지지 않도록 구성할 수도 있다.. next..
 
+    let s1 = String::from("hello");
+
+    let len = calculate_length(&s1);
+    // &s1 사용시 값을 참조하지만 소유하지 않는 참조를 만들 수 있다
+    // s1을 소유하지 않기 때문에 참조가 사용을 중단해도 s1이 사라지지 않는다
+
+    println!("The length of '{}' is {}.", s1, len);
+
+    let mut s = String::from("hello");
+    change(&mut s);
+    println!("{}", s);
+    // 참조 후 변경하고자 하면 &mut 구문사용
+
+
+    let mut s = String::from("Hello");
+
+    // let r1 = &mut s;
+    // let r2 = &mut s;
+    // 두개의 변경가능한 참조는 만들 수 없다
+    {
+        let r1 = &mut s;
+    }
+    let r2 = &mut s;
+    // scope를 다르게 하여 해결 가능
+
+    let r1 = &s;
+    let r2 = &s;
+    println!("{} and {}", r1, r2);
+    // variables r1 and r2 will not be used after this point
+
+    let r3 = &mut s; // problem
+    // 동일한 값 에 대한 불변 참조가 있는 동안에는 가변 참조를 가질 수 없습니다.
+    // 하지만 사용되지 않아 메모리가 반환되면 다시 사용 가능
+
+    let reference_to_nothing = dangle();
+
+    // let mut s = String::from("hello world");
+
+    // let word = first_word(&s); // 5
+
+    // s.clear(); // s = ""
+    // frist_word 함수 바뀌면서 s.clear()는 불가능해짐
+    // 무언가에 대한 불변 참조가 있으면 가변 참조도 사용할 수 없음
+
+    // slice
+    let s = String::from("Hello World");
+
+    let hello = &s[0..5];
+    let world = &s[6..11];
+    
+    let slice = &s[0..2];
+    let slice = &s[..2]; // 0 생략 가능
+
+    let s = String::from("hello");
+
+    let len = s.len();
+
+    let slice = &s[3..len];
+    let slice = &s[3..]; // 마지막 생략 가능
+
+    let slice = &s[0..len];
+    let slice = &s[..]; // 동일 구문
+
+    let my_string = String::from("hello world");
+
+    let word = first_word(&my_string[0..6]); 
+    let word = first_word(&my_string[..]);
+    let word = first_word(&my_string);
+
+    let my_string_literal = "hello world";
+
+    let word = first_word(&my_string_literal[0..6]);
+    let word = first_word(&my_string_literal[..]);
+
+    let word = first_word(my_string_literal); // 모두 실행 가능
 }
 
 fn takes_ownership(some_string: String) {
@@ -129,8 +204,46 @@ fn takes_and_gives_back(a_string: String) -> String { // a_string comes into
     a_string  // a_string is returned and moves out to the calling function
 }
 
-fn calculate_length(s: String) -> (String, usize) {
-    let length = s.len(); // len() returns the length of a String
+// fn calculate_length(s: String) -> (String, usize) {
+//     let length = s.len(); // len() returns the length of a String
 
-    (s, length)
+//     (s, length)
+// }
+
+fn calculate_length(s: &String) -> usize {
+    s.len()
+}
+
+fn change(some_string: &mut String) {
+    some_string.push_str(", world!");
+}
+
+fn dangle() -> String {
+    let s = String::from("hello");
+
+    s
+}
+
+// fn first_word(s: &String) -> usize {
+//     let bytes = s.as_bytes(); // 바이트로 변환
+
+//     for (i, &item) in bytes.iter().enumerate() { // 바이트 배열에 대한 반복자
+//         if item == b' ' { // 공백 위치 찾으면 반환
+//             return i;
+//         }
+//     }
+
+//     s.len()
+// }
+
+fn first_word(s: &str) -> &str {
+    let bytes = s.as_bytes();
+
+    for (i, &item) in bytes.iter().enumerate() {
+        if item == b' ' {
+            return &s[0..i];
+        }
+    }
+
+    &s[..]
 }
