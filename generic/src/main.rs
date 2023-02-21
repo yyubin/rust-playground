@@ -82,17 +82,17 @@ impl<X1, Y1> Point<X1, Y1> {
     }
 }
 
-enum Option_i32 {
+enum OptionI32 {
     Some(i32),
     None,
 }
 
-enum Option_f64 {
+enum OptionF64 {
     Some(f64),
     None,
 }
 
-use aggregator::{Summary, Tweet};
+// use aggregator::{Summary, Tweet};
 
 fn main() {
     let num_list = vec![34, 50, 25, 100, 65];
@@ -178,19 +178,19 @@ fn main() {
     let integer = Some(5);
     let float = Some(5.0);
 
-    let integer = Option_i32::Some(5);
-    let float = Option_f64::Some(5.0);
+    let integer = OptionI32::Some(5);
+    let float = OptionF64::Some(5.0);
     // 러스트는 제네릭 코드를 각 인스턴스의 유형을 지정하는 코드로 컴파일하기 때문에 제네릭 사용에 대한 런타임 비용을 지불하지 않습니다. 
     // 코드가 실행될 때, 그것은 우리가 손으로 각 정의를 복제한 것처럼 수행된다. 단형화 과정은 러스트의 제네릭을 런타임에 매우 효율적으로 만든다.
 
-    let tweet = Tweet {
-        username: String::from("horse_ebooks"),
-        content: String::from(
-            "of course, as you probably already know, people",
-        ),
-        reply: false,
-        retweet: false,
-    };
+    // let tweet = Tweet {
+    //     username: String::from("horse_ebooks"),
+    //     content: String::from(
+    //         "of course, as you probably already know, people",
+    //     ),
+    //     reply: false,
+    //     retweet: false,
+    // };
 
-    println!("1 new tweet: {}", tweet.summarize());
+    // println!("1 new tweet: {}", tweet.summarize());
 }
