@@ -1,3 +1,3 @@
 fn main() {
-    println!("Hello, world!");
+    let _x/*: i16*/ = 10;
 }
