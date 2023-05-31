@@ -22,5 +22,16 @@ Sixth item: {:?}",
         random_tuple.3,
         random_tuple.4,
         random_tuple.5,
-    )
+    );
+
+    // Vec<(&str, i32)>
+    let my_vec = vec![("Hey", 9), ("Hello", 89)];
+
+    // Destructuring
+    // Structure
+
+    let str_tuple = ("one", "two", "three");
+    let (a, _, _) = str_tuple;
+
+    println!("Item a is : {}", a);
 }
